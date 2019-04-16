@@ -1,4 +1,4 @@
-module.exports = {
+ module.exports = {
     baseUrl: './',
     productionSourceMap: false,
     devServer: {
