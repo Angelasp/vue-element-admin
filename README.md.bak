@@ -1,0 +1,17 @@
+vue-element-admin
+vue-element-admin
+
+基于 vue+element+admin 后台模板UI
+
+
+# 克隆项目
+git clone https://github.com/Angelasp/vue-element-admin.git
+
+# 进入项目目录
+cd vue-element-admin
+
+# 安装依赖
+npm install
+
+# 本地开发 启动项目
+npm run dev
