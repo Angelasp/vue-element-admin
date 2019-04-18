@@ -95,6 +95,6 @@
     }
     .login-tips{
         font-size:12px;
-        line-heigh:#000;
+        color:#000;
     }
 </style>
