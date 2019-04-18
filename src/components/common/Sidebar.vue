@@ -43,10 +43,12 @@
 
 <script>
 import bus from "../common/bus";
+
 export default {
   data() {
     return {
       collapse: false,
+      menuItems: [],
       items: [
         {
           icon: "el-icon-lx-home",
@@ -116,7 +118,7 @@ export default {
             {
               index: "tree5",
               title: "节点选择"
-            },
+            }
           ]
         },
         {
@@ -162,6 +164,39 @@ export default {
       ]
     };
   },
+  methods: {
+    getMenuData(menuName) {
+      let menuData = [];
+      this.$axios({ method: "get", url: "./menu.json" }).then(
+        function(data) {
+          let data1 = data.data.menuArr;
+          data1.forEach((val,index) => {
+            if(val.menuname==menuName){
+              let systemItem = {};
+              systemItem.icon = "el-icon-lx-warn";
+              systemItem.idex=8;
+              systemItem.title=val.menuname;
+              systemItem.subs=[];
+              data1.forEach(value => {
+                if(value.parentid==val.id){
+                  let systemSubs = {};
+                  systemSubs.index = value.menuurl;
+                  systemSubs.title = value.menuname;
+                  systemItem.subs.push(systemSubs);
+                }
+              });
+              this.items.push(systemItem);
+            }
+          });
+        }.bind(this)
+      );
+    },
+    formatterMenu(menu){
+      if(menu.parentid!=0){
+        
+      }
+    }
+  },
   computed: {
     onRoutes() {
       return this.$route.path.replace("/", "");
@@ -172,6 +207,7 @@ export default {
     bus.$on("collapse", msg => {
       this.collapse = msg;
     });
+    this.getMenuData("系统管理");
   }
 };
 </script>

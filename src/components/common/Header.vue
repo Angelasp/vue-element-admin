@@ -200,4 +200,7 @@ export default {
 .el-dropdown-menu__item {
   text-align: center;
 }
+.collapse-btn:hover{
+  background-color: #009688!important;
+}
 </style>
