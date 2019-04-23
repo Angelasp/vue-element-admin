@@ -9,12 +9,13 @@ import './assets/css/icon.css';
 import './components/common/directives';
 import "babel-polyfill";
 import store from './store'
+import Mock from './mock/mock'
 Vue.config.productionTip = false
 Vue.use(ElementUI, {
     size: 'small'
 });
 Vue.prototype.$axios = axios;
-
+Mock.bootstrap();
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
     const role = localStorage.getItem('ms_username');

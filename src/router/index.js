@@ -122,6 +122,11 @@ export default new Router({
                     path: '/admin',
                     component: resolve => require(['../components/page/admin.vue'], resolve),
                     meta: { title: '用户信息' }
+                },
+                {
+                    path: '/usermanager',
+                    component: resolve => require(['../components/page/sysmanager/usermanager.vue'], resolve),
+                    meta: { title: '用户管理' }
                 }
             ]
         },

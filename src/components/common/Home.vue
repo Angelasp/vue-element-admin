@@ -12,7 +12,7 @@
         </transition>
       </div>
     </div>
-    <el-dialog title="密码修改" :visible.sync="isShow">
+    <el-dialog title="密码修改" :visible.sync="isShow" v-dialogDrag :before-close="handleClose">
       <el-form :model="form">
         <el-form-item label="原密码" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
@@ -63,7 +63,15 @@ export default {
     })
   },
   methods: {
-    ...mapActions("dailog", ["hideDailog", "showDailog"])
+    ...mapActions("dailog", ["hideDailog", "showDailog"]),
+    handleClose(){
+       this.$confirm('确认关闭？')
+          .then(_ => {
+            this.hideDailog();
+            //this.$store.dispatch('dailog/hideDailog')
+          }).bind(this)
+          .catch(_ => {});
+    }
   },
   components: {
     vHead,

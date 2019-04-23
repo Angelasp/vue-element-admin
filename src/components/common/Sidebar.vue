@@ -43,7 +43,7 @@
 
 <script>
 import bus from "../common/bus";
-
+import {getSysmenu} from '../../api/api'
 export default {
   data() {
     return {
@@ -55,11 +55,11 @@ export default {
           index: "dashboard",
           title: "系统首页"
         },
-        {
+        /* {
           icon: "el-icon-lx-cascades",
           index: "table",
           title: "基础表格"
-        },
+        }, */
         {
           icon: "el-icon-lx-copy",
           index: "tabs",
@@ -167,34 +167,32 @@ export default {
   methods: {
     getMenuData(menuName) {
       let menuData = [];
-      this.$axios({ method: "get", url: "./menu.json" }).then(
+      getSysmenu().then(
         function(data) {
-          let data1 = data.data.menuArr;
+          let data1 = data.data.data;
           data1.forEach((val,index) => {
+            let i=8;
             if(val.menuname==menuName){
               let systemItem = {};
               systemItem.icon = "el-icon-lx-warn";
-              systemItem.idex=8;
+              systemItem.idex=i;
               systemItem.title=val.menuname;
               systemItem.subs=[];
               data1.forEach(value => {
                 if(value.parentid==val.id){
                   let systemSubs = {};
-                  systemSubs.index = value.menuurl;
+                  let menuurl = value.menuurl.split('/')[2];
+                  systemSubs.index = menuurl;
                   systemSubs.title = value.menuname;
                   systemItem.subs.push(systemSubs);
                 }
               });
               this.items.push(systemItem);
             }
+            i++;
           });
         }.bind(this)
       );
-    },
-    formatterMenu(menu){
-      if(menu.parentid!=0){
-        
-      }
     }
   },
   computed: {

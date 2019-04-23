@@ -17,6 +17,11 @@
                     <el-progress :percentage="0.9" color="#f56c6c"></el-progress>
                 </el-card>
             </el-col>
+            <el-col :span="12">
+                <el-card shadow="hover">
+                    <schart ref="bar" class="schart" canvasId="bar" :data="data" type="bar" :options="options"></schart>
+                </el-card>
+            </el-col>
             <!-- <el-col :span="16">
                 <el-row :gutter="20" class="mgb20">
                     <el-col :span="8">

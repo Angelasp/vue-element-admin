@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "axios-mock-adapter": "^1.16.0",
     "babel-polyfill": "^6.26.0",
     "element-ui": "^2.4.11",
     "mavon-editor": "^2.6.17",
