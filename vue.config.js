@@ -2,6 +2,7 @@
     baseUrl: './',
     productionSourceMap: false,
     devServer: {
+        port:8888,
         proxy: {
             '/api':{
                 target:'http://jsonplaceholder.typicode.com',
