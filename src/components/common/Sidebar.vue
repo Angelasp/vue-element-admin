@@ -174,7 +174,7 @@ export default {
             let i=8;
             if(val.menuname==menuName){
               let systemItem = {};
-              systemItem.icon = "el-icon-lx-warn";
+              systemItem.icon = "el-icon-setting";
               systemItem.idex=i;
               systemItem.title=val.menuname;
               systemItem.subs=[];

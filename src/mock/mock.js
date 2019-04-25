@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Mock from 'mockjs'
 import MockAdapter from 'axios-mock-adapter';
 import {users} from './data/user';
 import {sysmenu} from './data/sysmenu';
@@ -46,6 +47,45 @@ export default{
                     }])
                 },500)
                 
+            })
+        })
+        mock.onGet('/user/editUser').reply((config)=>{
+            let {userid,username,isable} = config.params;
+            _users.forEach(u => {
+                if(u.userid==userid){
+                    u.username=username;
+                    u.isable=isable;
+                }
+            })
+            return new Promise((resolve,reject)=>{
+                resolve([200,{
+                     code:200,
+                     msg:'修改成功'
+                }])
+            })
+        })
+        mock.onGet('user/addUser').reply((config)=>{
+            debugger
+            let {id} = Mock.mock({
+                id:Mock.Random.guid()
+            })
+            let orderNum = _users.length;
+            let {username,rolename,isable} = config.params;
+            _users.push({
+                orderNum:++orderNum,
+                userid:id,
+                username:username,
+                rolename:rolename,
+                loginTime:'0',
+                loginDate:'',
+                creater:localStorage.getItem('ms_username'),
+                isable:isable
+            });
+            return new Promise((resolve,reject)=>{
+                resolve([200,{
+                    msg:'添加成功',
+                    code:200
+                }])
             })
         })
     }
