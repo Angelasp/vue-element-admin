@@ -60,9 +60,15 @@
         ></el-pagination>
       </div>
       <!-- 编辑框 -->
-      <el-dialog title="修改信息" :visible.sync="editUserVisible" ref="editUserForm" :before-close="confirmClose" v-dialogDrag>
-        <el-form :model="userForm" :rules="editRule">
-          <el-form-item label="用户名" :label-width="formLabelWidth" prop="name">
+      <el-dialog
+        title="修改信息"
+        :visible.sync="editUserVisible"
+        ref="editUserForm"
+        :before-close="confirmClose"
+        v-dialogDrag
+      >
+        <el-form :model="userForm" :rules="editRule" ref="editUserForm">
+          <el-form-item label="用户名" :label-width="formLabelWidth" prop="username">
             <el-input v-model="userForm.username" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="状态" :label-width="formLabelWidth">
@@ -72,16 +78,16 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="editUserVisible=false">取 消</el-button>
-          <el-button type="primary" @click="editUser">确 定</el-button>
+          <el-button type="primary" @click.native="editUser">确 定</el-button>
         </div>
       </el-dialog>
       <!-- 新建用户 -->
       <el-dialog title="新建用户" :visible.sync="addUserVisible" ref="addUserForm" v-dialogDrag>
         <el-form :model="addUserForm" :rules="addUserRule">
-          <el-form-item label="用户名" :label-width="formLabelWidth" prop="name">
+          <el-form-item label="用户名" :label-width="formLabelWidth" prop="username">
             <el-input v-model="addUserForm.username" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="角色名称" :label-width="formLabelWidth" prop="role">
+          <el-form-item label="角色名称" :label-width="formLabelWidth" prop="rolename">
             <el-select v-model="addUserForm.rolename">
               <el-option label="admin" value="admin"></el-option>
               <el-option label="管理员" value="管理员"></el-option>
@@ -102,7 +108,13 @@
   </div>
 </template>
 <script>
-import { getUserList, getDeleUser,getEditUser,getAddUser } from "../../../api/api";
+import {
+  getUserList,
+  getDeleUser,
+  getEditUser,
+  getAddUser,
+  getDeleteOne
+} from "../../../api/api";
 export default {
   data() {
     return {
@@ -114,29 +126,33 @@ export default {
       isShowloading: false,
       delData: [], //删除的数据
       editUserVisible: false, //是否显示编辑
-      addUserVisible:false,//新建用户框
-      userForm: {},//编辑数据
-      addUserForm:{
-        username:'',
-        rolename:'',
-        isable:'0',
-      },//添加用户数据
-      addUserRule:{
-        name: [
-						{ required: true, message: '请输入姓名', trigger: 'blur' }
-					],
-        role:[{
-          required:true,
-          message:'请选择角色',
-          trigger:'change'
-        }]
+      addUserVisible: false, //新建用户框
+      userForm: {}, //编辑数据
+      addUserForm: {
+        username: "",
+        rolename: "",
+        isable: "0"
+      }, //添加用户数据
+      addUserRule: {
+        username: [
+          { required: true, message: "请输入用户名", trigger: "blur" }
+        ],
+        rolename: [
+          {
+            required: true,
+            message: "请选择角色",
+            trigger: "change"
+          }
+        ]
       },
-      editRule:{
-        name:[{
-          required:true,
-          message:'请输入姓名',
-          trigger:'blur'
-        }]
+      editRule: {
+        username: [
+          {
+            required: true,
+            message: "请输入姓名",
+            trigger: "blur"
+          }
+        ]
       },
       formLabelWidth: "120px"
     };
@@ -148,7 +164,7 @@ export default {
     getUsers() {
       this.isShowloading = true;
       let params = {
-        searchInfo: this.searchInfo,
+        searchInfo: this.searchInfo.trim(),
         page: this.pageNo
       };
       getUserList(params).then(res => {
@@ -164,16 +180,18 @@ export default {
     handleSelectionChange(delData) {
       this.delData = delData;
     },
-    saveUser(){
-      let params=Object.assign({},this.addUserForm);
-      debugger
-      getAddUser(params).then(res=>{
+    saveUser() {
+      let params = Object.assign({}, this.addUserForm);
+      params.username = params.username.trim();
+      getAddUser(params).then(res => {
         this.$message({
-          message:"添加成功",
-          type:"success"
+          message: "添加成功",
+          type: "success"
         });
+        this.addUserVisible = false;
+        this.addUserForm = {};
         this.getUsers();
-      })
+      });
     },
     delAll() {
       this.$confirm("确认删除该用户吗?", "提示", {
@@ -198,25 +216,49 @@ export default {
       this.editUserVisible = true;
       this.userForm = Object.assign({}, row);
     },
-    editUser(){
-      let params = this.userForm;
-      getEditUser(params).then(res=>{
-        this.$message({
-          type:'success',
-          message:res.data.msg
-        })
-        this.getUsers();
-        this.editUserVisible=false;
-        this.userForm={};
-      }).bind(this)
+    handleDelete(index, row) {
+      let params = {
+        userid: row.userid
+      };
+      this.$confirm("确认删除该用户？", "提示", {
+        type: "warning"
+      }).then(() => {
+        getDeleteOne(params).then(res => {
+          this.$message({
+            type: "success",
+            message: "删除成功"
+          });
+          this.getUsers();
+        });
+      });
     },
-    confirmClose(done){
-      this.$confirm('确认关闭将丢失已编辑内容？','提示',{
-        type:'warning'
-      }).then(()=>{
-        this.userForm={};
-        done()
-      })
+    editUser() {
+      debugger
+      this.$refs['editUserForm'].validate((valid) => {
+        debugger
+        if (valid) {
+          let params = this.userForm;
+          getEditUser(params)
+            .then(res => {
+              this.$message({
+                type: "success",
+                message: res.data.msg
+              });
+              this.getUsers();
+              this.editUserVisible = false;
+              this.userForm = {};
+            })
+            .bind(this);
+        }
+      });
+    },
+    confirmClose(done) {
+      this.$confirm("确认关闭将丢失已编辑内容？", "提示", {
+        type: "warning"
+      }).then(() => {
+        this.userForm = {};
+        done();
+      });
     }
   },
   mounted() {

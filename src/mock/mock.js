@@ -71,7 +71,7 @@ export default{
             })
             let orderNum = _users.length;
             let {username,rolename,isable} = config.params;
-            _users.push({
+            _users.unshift({
                 orderNum:++orderNum,
                 userid:id,
                 username:username,
@@ -85,6 +85,20 @@ export default{
                 resolve([200,{
                     msg:'添加成功',
                     code:200
+                }])
+            })
+        })
+        mock.onGet('/user/DeleteOne').reply(config=>{
+            let {userid}=config.params;
+            _users.forEach((item,index)=>{
+                if(item.userid==userid){
+                    _users.splice(index,1);
+                }
+            })
+            return new Promise((resolve,reject)=>{
+                resolve([200,{
+                    code:200,
+                    msg:'删除成功'
                 }])
             })
         })

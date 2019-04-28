@@ -19,3 +19,6 @@ export const getAddUser = params=>{
         params:params
     })
 }
+export const getDeleteOne = params=>{
+    return axios.get(`${baseUrl}/user/DeleteOne`,{params:params})
+}
