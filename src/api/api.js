@@ -4,7 +4,7 @@ export const getUserList = params=>{
     return axios.get(`${baseUrl}/user/list`,{params:params})
 }
 export const getSysmenu = ()=>{
-    return axios.get(`${baseUrl}/user/sysmenu`)
+    return axios.get('../../menu.json')
 }
 export const getDeleUser = params=>{
     return axios.get('user/deletUsers',{params:params});
@@ -21,4 +21,7 @@ export const getAddUser = params=>{
 }
 export const getDeleteOne = params=>{
     return axios.get(`${baseUrl}/user/DeleteOne`,{params:params})
+}
+export const testApi = ()=>{
+    return axios.get("/testApi/getkeywhereisddata?CITY_NAME=全省&S_id=B08I00136&callback=")
 }

@@ -2,13 +2,20 @@
     baseUrl: './',
     productionSourceMap: false,
     devServer: {
-        port:8888,
+        //port:8888,
         proxy: {
             '/api':{
                 target:'http://jsonplaceholder.typicode.com',
                 changeOrigin:true,
                 pathRewrite:{
                     '/api':''
+                }
+            },
+            '/testApi':{
+                target:'http://111.8.20.247:89/api/apph5api',
+                changeOrigin:true,
+                pathRewrite:{
+                    '^/testApi':'/testApi'
                 }
             },
             '/ms':{

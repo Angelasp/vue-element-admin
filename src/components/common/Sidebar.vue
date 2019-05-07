@@ -169,7 +169,7 @@ export default {
       let menuData = [];
       getSysmenu().then(
         function(data) {
-          let data1 = data.data.data;
+          let data1 = data.data.menuArr;
           data1.forEach((val,index) => {
             let i=8;
             if(val.menuname==menuName){

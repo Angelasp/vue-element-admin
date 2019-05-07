@@ -113,11 +113,13 @@ import {
   getDeleUser,
   getEditUser,
   getAddUser,
-  getDeleteOne
+  getDeleteOne,
+  testApi
 } from "../../../api/api";
 export default {
   data() {
     return {
+      url:"",
       searchInfo: "",
       users: [],
       total: 0,
@@ -259,10 +261,20 @@ export default {
         this.userForm = {};
         done();
       });
+    },
+    testFn(){
+      this.url = '/ms/table/list';
+      this.$axios.get(this.url).then(res=>{
+        console.log(res)
+      })
+      testApi().then(res=>{
+        console.log(res)
+      })
     }
   },
   mounted() {
-    this.getUsers();
+    //this.getUsers();
+    this.testFn();
   }
 };
 </script>
