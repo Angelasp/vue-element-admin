@@ -13,7 +13,7 @@
     "babel-polyfill": "^6.26.0",
     "echarts": "^4.2.1",
     "element-ui": "^2.4.11",
-    "mavon-editor": "^2.6.17",
+    "mavon-editor": "^2.8.2",
     "mockjs": "^1.0.1-beta3",
     "vue": "^2.5.21",
     "vue-cropperjs": "^3.0.0",
